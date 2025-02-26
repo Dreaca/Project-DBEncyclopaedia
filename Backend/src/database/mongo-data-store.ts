@@ -15,3 +15,10 @@ export async function BookSave(b:Book){
         console.log("Error creating BookSave",err);
     }
 }
+export async function BookFindAll(){
+    try {
+        return await BookModel.find()
+    }catch (err){
+        console.log("Error creating BookFindAll",err);
+    }
+}

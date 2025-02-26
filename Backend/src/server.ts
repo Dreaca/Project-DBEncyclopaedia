@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URI||"mongodb://localhost:27017/checkList-app");
+mongoose.connect(process.env.MONGODB_URI||"mongodb://localhost:27017/bookList-db");
 
 const PORT = process.env.PORT || 5000;
 
@@ -20,15 +20,13 @@ db.on('open',()=>{
     console.log("DB Connection open");
 })
 
-app.use(express.json());
-
 app.use(cors({
     // origin: "http://localhost:8081",
     origin:'true',
     methods:['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
     credentials:true
 }))
-
+app.use(express.json());
 app.use('/book',bookRoutes)
 
 app.listen(PORT, () => {
