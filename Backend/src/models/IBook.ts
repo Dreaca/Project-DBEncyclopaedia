@@ -1,5 +1,5 @@
 
-export class Book {
+export class IBook {
     id!: number;
     name!: string;
     category!: string;
