@@ -10,6 +10,7 @@ export default function DashboardLayout(){
         <Drawer initialRouteName="books">
             <Drawer.Screen name="books" options={{ title: 'Books' }} />
             <Drawer.Screen name="customList" options={{ title: 'Custom Lists'}} />
+            <Drawer.Screen name="modsearch" options={{ title: 'Search Nexus'}} />
         </Drawer>
     );
 }

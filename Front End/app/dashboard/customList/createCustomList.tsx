@@ -3,12 +3,11 @@ import { View, TextInput, Modal, StyleSheet } from "react-native";
 import { Text, DataTable,Button } from "react-native-paper";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../../store/store";
-import CustomLists from "../../../models/CustomLists";
+import CustomList from "../../../models/CustomList";
 import {saveCustomList} from "../../../reducers/CustomListSlice";
 import CustomItem from "../../../models/CustomItem";
 import 'react-native-get-random-values'
 import {v4} from 'uuid'
-import {navigate} from "expo-router/build/global-state/routing";
 import {router} from "expo-router";
 
 export default function CreateCustomList() {
@@ -34,15 +33,18 @@ export default function CreateCustomList() {
     };
     const handleSaveCustomList = () => {
         const listId = `LISTID-${v4()}`
-        const newList:CustomLists = {
+        const newList:CustomList = {
             listId:listId,
             userId:"user",
             listName:listName,
+            votes:0,
             customItems:items
         }
         dispatch(saveCustomList(newList));
+        setListName("");
+        setItems([])
+
         router.push({pathname:"dashboard/customList/customLists"});
-        //EMPTY the PAGE
     }
     const handleDeleteItem = (id: number) => {
         setItems(items.filter((_, index) => index !== id));

@@ -2,7 +2,7 @@
 import axios from "axios";
 import {combineReducers, createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import CustomItem from "../models/CustomItem";
-import CustomLists from "../models/CustomLists";
+import CustomList from "../models/CustomList";
 
 const initialState:any = {
     customLists:[]
@@ -35,7 +35,7 @@ export const getOncCustomList = createAsyncThunk(
 )
 export const saveCustomList = createAsyncThunk(
     'customList/saveCustomList',
-    async (list:CustomLists)=>{
+    async (list:CustomList)=>{
         try {
             const response = await api.post('/add',list)
             return response.data
@@ -46,7 +46,7 @@ export const saveCustomList = createAsyncThunk(
 )
 export const updateCustomList = createAsyncThunk(
     'customList/updateCustomList',
-    async (list:CustomLists)=>{
+    async (list:CustomList)=>{
         try{
             const response = await api.put(`/update/${list.listId}`,list)
             return response.data
@@ -90,6 +90,26 @@ const CustomListSlice = createSlice({
             })
             .addCase(getAllCustomLists.rejected,(state, action)=>{
                 alert("List loading failed. Please try again")
+            })
+        builder
+            .addCase(deleteCustomList.fulfilled,(state, action)=>{
+                alert("Custom List deleted ")
+            })
+            .addCase(deleteCustomList.pending,(state,action)=>{
+                console.log("Pending Deletion")
+            })
+            .addCase(deleteCustomList.rejected,(state, action)=>{
+                alert("Deletion Unsuccessful. Please Try Again")
+            })
+        builder
+            .addCase(updateCustomList.rejected,(state,action)=>{
+                alert("Update interrupted. Please try again")
+            })
+            .addCase(updateCustomList.pending,(state, action)=>{
+                console.log("Pending Update")
+            })
+            .addCase(updateCustomList.fulfilled,(state,action)=>{
+                alert("Custom List Updated ! ")
             })
     }
 })

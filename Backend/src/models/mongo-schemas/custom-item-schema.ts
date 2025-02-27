@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const CustomItemSchema = new mongoose.Schema({
     listId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'ListCollection',
         required: true
     },

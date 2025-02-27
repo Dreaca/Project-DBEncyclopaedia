@@ -6,6 +6,7 @@ import UserModel from "../models/mongo-schemas/user-schema";
 import bcrypt from "bcryptjs";
 import {IListCollection} from "../models/IListCollection";
 import ListCollectionModel from "../models/mongo-schemas/list-collection-schema";
+import CustomItemModel from "../models/mongo-schemas/custom-item-schema";
 //Book Functions
 export async function BookSave(b:IBook){
     try{
@@ -60,6 +61,17 @@ export async function SaveCustomListName(lc:IListCollection){
             votes:0,
             createdAt:new Date()
         });
+        if (lc.customItems && lc.customItems.length > 0) {
+            const itemsToSave = lc.customItems.map((item) => ({
+                listId: lc.listId,
+                itemName: item.itemName,
+                status: item.status,
+                extra: item.extra
+            }));
+
+            await CustomItemModel.insertMany(itemsToSave);
+            console.log("Custom Items Saved!");
+        }
         console.log("Custom List Saved!")
     }catch (err){
         console.log("Error creating ListName",err);

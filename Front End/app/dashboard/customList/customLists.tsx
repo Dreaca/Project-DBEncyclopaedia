@@ -2,28 +2,20 @@ import { View, ScrollView, Button, TouchableOpacity } from "react-native";
 import { DataTable,Text } from "react-native-paper";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../../../store/store";
+import {getAllCustomLists} from "../../../reducers/CustomListSlice";
+import CustomList from "../../../models/CustomList";
+import CustomItem from "../../../models/CustomItem";
 
 export default function CustomLists() {
     const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
 
-    // Sample customLists array for testing
-    const customLists = [
-        {
-            listId: "01",
-            listName: "Custom List 1",
-            creator: "Custom Creator 1",
-        },
-        {
-            listId: "02",
-            listName: "Custom List 2",
-            creator: "Custom Creator 2",
-        },
-        // Add more items for testing pagination
-    ];
+    const customLists = useSelector(state => state.custom.customLists)
 
-    // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 1; // Number of items to display per page for testing
+    const itemsPerPage = 1;
 
     // Pagination logic
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -49,11 +41,17 @@ export default function CustomLists() {
         // router.push(`/customLists/${listId}`); // Adjust path according to your setup
         console.log("Row pressed ")
     };
+    const handleEdit = (c: CustomList) => {
+        if (c.userId === "user"){
+            alert("You have permission");
+        }else{
+            alert("Only the creator can edit the list ! ")
+        }
+    }
 
     useEffect(() => {
-        console.log("Current Items:", currentItems); // Check the sliced items
-        console.log("Total Pages:", totalPages); // Check the pagination
-    }, [currentItems, totalPages]);
+        dispatch(getAllCustomLists())
+    }, [dispatch]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -61,17 +59,19 @@ export default function CustomLists() {
                 <DataTable>
                     <DataTable.Header>
                         <DataTable.Title style={{ flex: 3, padding: 2 }}>List Name</DataTable.Title>
-                        <DataTable.Title style={{ flex: 2, padding: 2 }}>Owner/Creator</DataTable.Title>
+                        <DataTable.Title style={{ flex: 3, padding: 2 }}>Owner/Creator</DataTable.Title>
+                        <DataTable.Title style={{ flex: 2, padding: 2 }}>Votes</DataTable.Title>
                         <DataTable.Title style={{ flex: 1, padding: 2 }}>Edit</DataTable.Title>
                     </DataTable.Header>
 
                     {currentItems.length > 0 ? (
-                        currentItems.map((item) => (
+                        currentItems.map((item:CustomList) => (
                             <DataTable.Row key={item.listId} onPress={() => handleRowPress(item.listId)}>
                                 <DataTable.Cell style={{ flex: 3, padding: 2 }}>{item.listName}</DataTable.Cell>
-                                <DataTable.Cell style={{ flex: 2, padding: 2 }}>{item.creator}</DataTable.Cell>
+                                <DataTable.Cell style={{ flex: 3, padding: 2 }}>{item.userId}</DataTable.Cell>
+                                <DataTable.Cell style={{ flex: 2, padding: 2 }}>{item.votes}</DataTable.Cell>
                                 <DataTable.Cell style={{ flex: 1, padding: 2 }}>
-                                    <TouchableOpacity onPress={() => alert("Edit button pressed")}>
+                                    <TouchableOpacity onPress={() => handleEdit(item)}>
                                         <Text>📝</Text>
                                     </TouchableOpacity>
                                 </DataTable.Cell>
