@@ -1,8 +1,18 @@
 import React, { useState } from "react";
 import { View, TextInput, Modal, StyleSheet } from "react-native";
 import { Text, DataTable,Button } from "react-native-paper";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../store/store";
+import CustomLists from "../../../models/CustomLists";
+import {saveCustomList} from "../../../reducers/CustomListSlice";
+import CustomItem from "../../../models/CustomItem";
+import 'react-native-get-random-values'
+import {v4} from 'uuid'
+import {navigate} from "expo-router/build/global-state/routing";
+import {router} from "expo-router";
 
 export default function CreateCustomList() {
+    const dispatch = useDispatch<AppDispatch>();
     const [listName, setListName] = useState(""); // Store the custom list name
     const [items, setItems] = useState([]); // Store the list of items
     const [showModal, setShowModal] = useState(false); // Show or hide modal
@@ -11,9 +21,9 @@ export default function CreateCustomList() {
     const [newItemExtra, setNewItemExtra] = useState(""); // Extra field
 
     const handleAddItem = () => {
-        const newItem = {
-            name: newItemName,
-            status: newItemStatus ? "Completed" : "Pending", // status is either "Completed" or "Pending"
+        const newItem:CustomItem = {
+            itemName: newItemName,
+            status: newItemStatus,
             extra: newItemExtra
         };
         setItems([...items, newItem]);
@@ -22,41 +32,60 @@ export default function CreateCustomList() {
         setNewItemStatus(false);
         setNewItemExtra("");
     };
+    const handleSaveCustomList = () => {
+        const listId = `LISTID-${v4()}`
+        const newList:CustomLists = {
+            listId:listId,
+            userId:"user",
+            listName:listName,
+            customItems:items
+        }
+        dispatch(saveCustomList(newList));
+        router.push({pathname:"dashboard/customList/customLists"});
+        //EMPTY the PAGE
+    }
+    const handleDeleteItem = (id: number) => {
+        setItems(items.filter((_, index) => index !== id));
+    };
+
 
     return (
         <View style={{ flex: 1, padding: 20 }}>
             <Text style={{ fontSize: 24, marginBottom: 10 }}>Create Custom List</Text>
 
-            {/* Custom List Name Input */}
             <TextInput
-                label="Custom List Name"
+
                 value={listName}
                 onChangeText={setListName}
-                style={{borderColor:"black",borderWidth:0.5,borderRadius:15}}
+                style={{borderColor:"black",borderWidth:0.5,borderRadius:15,paddingHorizontal:15}}
                 placeholder="Custom List Name"
             />
+
 
             {/* Items Table */}
             <DataTable style={{ marginTop: 20 }}>
                 <DataTable.Header>
-                    <DataTable.Title>Item Name</DataTable.Title>
+                    <DataTable.Title style={{flex:2}}>Item Name</DataTable.Title>
                     <DataTable.Title>Status</DataTable.Title>
                     <DataTable.Title>Extra</DataTable.Title>
+                    <DataTable.Title> </DataTable.Title>
                 </DataTable.Header>
 
-                {items.map((item, index) => (
+                {items.map((item:CustomItem, index) => (
                     <DataTable.Row key={index}>
-                        <DataTable.Cell>{item.name}</DataTable.Cell>
+                        <DataTable.Cell>{item.itemName}</DataTable.Cell>
                         <DataTable.Cell>{item.status}</DataTable.Cell>
                         <DataTable.Cell>{item.extra}</DataTable.Cell>
+                        <DataTable.Cell numeric onPress={()=>handleDeleteItem(index)}>❌</DataTable.Cell>
                     </DataTable.Row>
                 ))}
             </DataTable>
 
-            {/* Add Item Button */}
-            <Button mode="outlined" onPress={() => setShowModal(true)}>Add Item + </Button>
 
-            {/* Modal for adding item */}
+            <Button mode="outlined" onPress={() => setShowModal(true)}>Add Item + </Button>
+            <Button mode="outlined" style={{marginTop:20}} onPress={()=>handleSaveCustomList()}>Save Custom List</Button>
+
+
             <Modal
                 visible={showModal}
                 animationType="slide"
@@ -67,18 +96,17 @@ export default function CreateCustomList() {
                 <View style={styles.modalContainer}>
                     <Text style={styles.modalTitle}>Add Item</Text>
 
-                    {/* Item Name */}
                     <TextInput
-                        label="Item Name"
+
                         value={newItemName}
                         onChangeText={setNewItemName}
                         style={styles.input}
                         placeholder="Enter Item"
                     />
 
-                    {/* Extra Information */}
+
                     <TextInput
-                        label="Extra"
+
                         value={newItemExtra}
                         onChangeText={setNewItemExtra}
                         style={styles.input}
@@ -112,7 +140,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0.5, 0.2)",
+        backgroundColor: "gray",
     },
     modal: {
         width: "80%",
@@ -125,5 +153,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontWeight: "bold",
         color: "white",
-    }
+    },
+
 });

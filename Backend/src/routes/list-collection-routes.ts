@@ -27,9 +27,9 @@ router.get('/getOne/:id', async (req: express.Request, res: express.Response) =>
     }
 })
 router.post('/add', async (req: express.Request, res: express.Response) => {
-    const listName = req.body;
+    const list = req.body;
     try{
-        const save = await SaveCustomListName(listName)
+        const save = await SaveCustomListName(list)
         res.status(200).send("Custom List name saved")
     }catch(err) {
         res.status(500).send("Something went wrong!"+err)
@@ -54,3 +54,4 @@ router.delete('/delete/:id',async (req: express.Request, res: express.Response) 
         res.status(500).send("Something went wrong!"+err)
     }
 })
+export default router

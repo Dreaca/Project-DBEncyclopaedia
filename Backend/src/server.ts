@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import bookRoutes from "./routes/book-routes";
+import listCollectionRoutes from "./routes/list-collection-routes";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(cors({
 }))
 app.use(express.json());
 app.use('/book',bookRoutes)
+app.use('/customLists',listCollectionRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);

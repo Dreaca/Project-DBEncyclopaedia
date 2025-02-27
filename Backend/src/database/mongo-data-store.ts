@@ -54,6 +54,7 @@ export async function VerifyUser(u:IUser){
 export async function SaveCustomListName(lc:IListCollection){
     try {
         const newList = await ListCollectionModel.create({
+            listId:lc.listId,
             userId: lc.userId,
             listName: lc.listName,
             votes:0,
@@ -80,7 +81,7 @@ export async function UpdateCustomListName(listId:string,lc:IListCollection){
             votes: lc.votes,
             createdAt:new Date()
         })
-        return await update;
+        return update;
     }catch (err){
         console.log("Error updating list name ", err)
     }
