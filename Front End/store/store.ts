@@ -8,5 +8,8 @@ export const store = configureStore({
     },
     devTools: false,
     enhancers: getDefaultEnhancers => getDefaultEnhancers().concat(devToolsEnhancer()),
+    middleware:(getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false,
+    }),
 });
 export type AppDispatch = typeof store.dispatch;

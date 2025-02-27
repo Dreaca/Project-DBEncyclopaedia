@@ -9,7 +9,6 @@ export async function BookSave(b:Book){
             category:b.category,
             owned:b.owned,
         })
-        console.log("Book Added")
         return newBook;
     }catch (err){
         console.log("Error creating BookSave",err);
