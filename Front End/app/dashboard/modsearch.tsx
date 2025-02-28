@@ -3,15 +3,15 @@ import { View, Text, FlatList, Image, ActivityIndicator, Alert, SafeAreaView, An
 import axios from "axios";
 import { Button } from "react-native-paper";
 
-const API_KEY = "Ib5SGU8OglOPDcPPO+v8ON8PNGUAfQRtjVkcOdFEQgfJY6H6bI/8--G5/6FoSpLcNkNKCO--sMoJxsPTN10zFFl42Ijj/g=="; // Replace with your Nexus Mods API key
-const GAME_DOMAIN = "skyrimspecialedition"; // Change for other games
+const API_KEY = "************************************"; // Replace with  Nexus Mods API key
+const GAME_DOMAIN = "skyrimspecialedition";
 
 const ModListScreen = () => {
     const [mods, setMods] = useState([]);
     const [loading, setLoading] = useState(false);
-    const scrollY = new Animated.Value(0); // Track scroll position
+    const scrollY = new Animated.Value(0);
 
-    // Function to fetch mods
+
     const fetchMods = async (category: string) => {
         setLoading(true);
         const url = `https://api.nexusmods.com/v1/games/${GAME_DOMAIN}/mods/${category}.json`;
@@ -38,7 +38,7 @@ const ModListScreen = () => {
 
     const buttonContainerHeight = scrollY.interpolate({
         inputRange: [0, 100],
-        outputRange: [50, 0], // Adjust height dynamically
+        outputRange: [50, 0],
         extrapolate: "clamp",
     });
 
@@ -52,7 +52,7 @@ const ModListScreen = () => {
         <View style={{ flex: 1, padding: 10 }}>
             <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>Browse Mods</Text>
 
-            {/* Animated Buttons - Hide on scroll */}
+
             <Animated.View
                 style={{
                     height: buttonContainerHeight,
@@ -60,7 +60,7 @@ const ModListScreen = () => {
                     overflow: "hidden",
                     flexDirection: "row",
                     justifyContent: "space-evenly",
-                    marginBottom: 10, // Adds space when visible, removes when hidden
+                    marginBottom: 10,
                 }}
             >
                 <Button mode="outlined" onPress={() => fetchMods("trending")}>Trending</Button>
@@ -68,10 +68,10 @@ const ModListScreen = () => {
                 <Button mode="outlined" onPress={() => fetchMods("latest_updated")}>Latest Updated</Button>
             </Animated.View>
 
-            {/* Loader */}
+
             {loading && <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 10 }} />}
 
-            {/* Mod List */}
+            
             <SafeAreaView>
                 <FlatList
                     data={mods}
