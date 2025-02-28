@@ -36,10 +36,11 @@ export default function CustomLists() {
         }
     };
 
-    const handleRowPress = (listId: string) => {
-        // Navigate to another page when a row is pressed
-        // router.push(`/customLists/${listId}`); // Adjust path according to your setup
-        console.log("Row pressed ")
+    const handleRowPress = (list:CustomList) => {
+        router.push({
+            pathname:'display/displayCustomList',
+            params: {list:JSON.stringify(list)},
+        });
     };
     const handleEdit = (c: CustomList) => {
         if (c.userId === "user"){
@@ -66,7 +67,7 @@ export default function CustomLists() {
 
                     {currentItems.length > 0 ? (
                         currentItems.map((item:CustomList) => (
-                            <DataTable.Row key={item.listId} onPress={() => handleRowPress(item.listId)}>
+                            <DataTable.Row key={item.listId} onPress={() => handleRowPress(item)}>
                                 <DataTable.Cell style={{ flex: 3, padding: 2 }}>{item.listName}</DataTable.Cell>
                                 <DataTable.Cell style={{ flex: 3, padding: 2 }}>{item.userId}</DataTable.Cell>
                                 <DataTable.Cell style={{ flex: 2, padding: 2 }}>{item.votes}</DataTable.Cell>

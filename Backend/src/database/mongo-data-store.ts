@@ -1,5 +1,4 @@
 import {IBook} from "../models/IBook";
-import BookSchema from "../models/mongo-schemas/book-schema";
 import BookModel from "../models/mongo-schemas/book-schema";
 import {IUser} from "../models/IUser";
 import UserModel from "../models/mongo-schemas/user-schema";
@@ -7,6 +6,7 @@ import bcrypt from "bcryptjs";
 import {IListCollection} from "../models/IListCollection";
 import ListCollectionModel from "../models/mongo-schemas/list-collection-schema";
 import CustomItemModel from "../models/mongo-schemas/custom-item-schema";
+
 //Book Functions
 export async function BookSave(b:IBook){
     try{
@@ -85,26 +85,56 @@ export async function DeleteCustomListName(listId:string){
         console.log("Could not delete ListName",err);
     }
 }
-export async function UpdateCustomListName(listId:string,lc:IListCollection){
-    try{
-        const update = await ListCollectionModel.updateOne({listId:listId},{
-            listName:lc.listName,
-            userId: lc.userId,
-            votes: lc.votes,
-            createdAt:new Date()
-        })
-        return update;
-    }catch (err){
-        console.log("Error updating list name ", err)
-    }
-}
-export async function GetAllCustomListNames(){
+export async function UpdateCustomListName(listId: string, lc: IListCollection) {
     try {
-        return await ListCollectionModel.find()
-    }catch (err){
-        console.log("Error loading list names",err)
+        const update = await ListCollectionModel.updateOne(
+            { listId: listId },
+            {
+                listName: lc.listName,
+                userId: lc.userId,
+                votes: lc.votes,
+                createdAt: new Date(),
+            }
+        );
+
+        if (lc.customItems && lc.customItems.length > 0) {
+            const bulkOps = lc.customItems.map((item) => ({
+                updateOne: {
+                    filter: { listId: lc.listId, itemName: item.itemName },
+                    update: {
+                        $set: {
+                            status: item.status,
+                            extra: item.extra,
+                        },
+                    },
+                    upsert: true, 
+                },
+            }));
+
+            await CustomItemModel.bulkWrite(bulkOps);
+        }
+    } catch (err) {
+        console.log("Error updating list name ", err);
     }
 }
+
+export async function GetAllCustomListNames() {
+    try {
+
+        const lists = await ListCollectionModel.find();
+
+        return await Promise.all(
+            lists.map(async (list) => {
+                const customItems = await CustomItemModel.find({listId: list.listId});
+                return {...list.toObject(), customItems};
+            })
+        );
+    } catch (err) {
+        console.log("Error loading list names", err);
+        throw err;
+    }
+}
+
 export async function GetOneCustomList(listId:string){
     try{
         return await ListCollectionModel.findOne({listId: listId})
