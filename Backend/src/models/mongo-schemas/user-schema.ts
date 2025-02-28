@@ -1,7 +1,7 @@
 import mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    id:{type:String,unique:true,autoIncrement:true},
+    userId:{type:String,unique:true},
     username:{type:String,unique:true},
     password:{type:String,unique:true},
 })

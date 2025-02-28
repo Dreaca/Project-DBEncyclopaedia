@@ -3,7 +3,7 @@ import { View, Text, FlatList, Image, ActivityIndicator, Alert, SafeAreaView, An
 import axios from "axios";
 import { Button } from "react-native-paper";
 
-const API_KEY = "ADD_API_KEY"; // Replace with your Nexus Mods API key
+const API_KEY = "Ib5SGU8OglOPDcPPO+v8ON8PNGUAfQRtjVkcOdFEQgfJY6H6bI/8--G5/6FoSpLcNkNKCO--sMoJxsPTN10zFFl42Ijj/g=="; // Replace with your Nexus Mods API key
 const GAME_DOMAIN = "skyrimspecialedition"; // Change for other games
 
 const ModListScreen = () => {

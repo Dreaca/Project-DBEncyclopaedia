@@ -8,10 +8,11 @@ import jwt, {Secret} from 'jsonwebtoken'
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
+    const userId = req.body.userId;
     const username = req.body.username;
     const password = req.body.password
 
-    const user : IUser = {username, password};
+    const user : IUser = {userId,username, password};
 
     const existing = await UserModel.findOne({ username: username });
     if (existing){
@@ -26,10 +27,11 @@ router.post("/register", async (req, res) => {
     }
 })
 router.post("/login", async (req:express.Request, res:express.Response) => {
+    const userId = req.body.userId;
     const username = req.body.username;
     const password = req.body.password
 
-    const verifyUser:IUser = {username, password};
+    const verifyUser:IUser = {userId,username, password};
     try{
         const verified = await VerifyUser(verifyUser);
 
@@ -60,3 +62,5 @@ router.post("/refresh-token", async (req:express.Request, res:express.Response) 
         res.status(401).json(err);
     }
 })
+
+export default router;

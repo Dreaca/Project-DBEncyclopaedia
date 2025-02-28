@@ -32,6 +32,7 @@ export async function UserSave(u:IUser){
     const hashedPassword = await bcrypt.hash(u.password,10)
     try {
         const newUser = await UserModel.create({
+            userId: u.userId,
             username: u.username,
             password: hashedPassword,
         });

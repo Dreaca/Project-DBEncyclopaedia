@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import bookRoutes from "./routes/book-routes";
 import listCollectionRoutes from "./routes/list-collection-routes";
+import authRoutes from "./routes/auth-routes";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(cors({
     credentials:true
 }))
 app.use(express.json());
+app.use('/auth',authRoutes)
 app.use('/book',bookRoutes)
 app.use('/customLists',listCollectionRoutes)
 
