@@ -45,13 +45,27 @@ Next section shows the top 10 trending, updated and latest added mods from the n
 
 ## Screenshots
 
+- Login Page
+![1000325629](https://github.com/user-attachments/assets/af609295-4043-4621-8868-87669114d5bf)
+- Book Lists
 ![1000325632](https://github.com/user-attachments/assets/0ccadd57-8424-4c9b-93fc-36475dd533d5)
+![1000325631](https://github.com/user-attachments/assets/df6050ec-c3d6-434c-9aaa-593527a77d2a)
+
+- Custom Lists
+![1000325632](https://github.com/user-attachments/assets/6472cf25-ed1d-4b46-9aaa-1b5b8a9c8356)
+![1000325633](https://github.com/user-attachments/assets/881ff242-d908-4ba3-b92d-990f1665f3e3)
+
+- Nexus Mod Page Intergration
+![1000325635](https://github.com/user-attachments/assets/ddae2549-8559-45cc-be09-ce58d30664c2)
+
+
+
 
 ## FAQ
 
 #### Is this in working stage?
 
-Not yet. However if you have an ide to run the app and expo go to run the ui, you can use it.
+Not yet. However if you have an IDE to run the app and expo go to run the ui, you can use it.
 
 #### Are you plannig on releasing this?
 
