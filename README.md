@@ -1,5 +1,5 @@
 
-# React Mobile Assignment (Dragonborn's Encyclopaedia)
+# Project DBEncyclopaedia (Dragonborn's Encyclopaedia)
 
 A small mobile app developed for using as a companion to Skyrim Special Edition by bethesda studio.
 
@@ -43,8 +43,9 @@ Next section shows the top 10 trending, updated and latest added mods from the n
 
 - Add support for books and items added by third party mods to the game
 
+## Screenshots
 
-
+![1000325632](https://github.com/user-attachments/assets/0ccadd57-8424-4c9b-93fc-36475dd533d5)
 
 ## FAQ
 
